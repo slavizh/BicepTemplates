@@ -1,5 +1,5 @@
 @description('The name of the storage account.')
-param storageAccountName string = 'str00343ggaa'
+param storageAccountName string
 
 @description('The location of the storage account.')
 param storageAccountLocation string = 'West Europe'
@@ -28,7 +28,7 @@ param storageAccountSku string = 'Standard_LRS'
 param storageAccountKind string = 'StorageV2'
 
 @description('Enable Files shares identity-based authentication to Microsoft Entra Kerberos Authentication. Default value: false.')
-param enableMicrosoftEntraKerberosAuthentication bool = true
+param enableMicrosoftEntraKerberosAuthentication bool = false
 
 @description('The default share permission for the files shared identity-based authentication. Default value: None.')
 @allowed([
