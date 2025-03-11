@@ -8,8 +8,8 @@ param resourceGroupName string
 param logAnalyticsWorkspaceName string
 
 resource logAnalyticsWorkspaceResource 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
-  scope: resourceGroup(subscriptionId, resourceGroupName)
   name: logAnalyticsWorkspaceName
+  scope: resourceGroup(subscriptionId, resourceGroupName)
 }
 
 resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
