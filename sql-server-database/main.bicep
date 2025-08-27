@@ -22,7 +22,7 @@ module sqlLogicalServer 'sql-logical-server.bicep' = if (contains(resourceGroup,
   params: {
     sqlLogicalServer: resourceGroup.sqlLogicalServer!
     sqlPassword: resourceGroup.?sqlLogicalServer.authentication.type =~ 'SQLOnly' || resourceGroup.?sqlLogicalServer.authentication.type =~ 'EntraAndSQL'
-      ? keyVault.getSecret(resourceGroup.?sqlLogicalServer.authentication.sqlLogin.password.secretName)
+      ? keyVault!.getSecret(resourceGroup.?sqlLogicalServer.authentication.sqlLogin.password.secretName)
       : ''
   }
 }
