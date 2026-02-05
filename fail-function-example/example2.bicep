@@ -45,7 +45,7 @@ param domainName string = ''
 @description('The domain GUID for the files shared identity-based authentication.')
 param domainGuid string = ''
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2025-06-01' = {
   name: storageAccountName
   location: storageAccountLocation
   sku: {

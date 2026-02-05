@@ -26,7 +26,7 @@ param sqlServerPassword string
 @description('Configures virtual network rules for the SQL server.')
 param virtualNetworkRule virtualNetworkRuleType?
 
-resource server 'Microsoft.Sql/servers@2024-05-01-preview' = {
+resource server 'Microsoft.Sql/servers@2024-11-01-preview' = {
   name: sqlServerName
   location: resourceGroup().location
   properties: {
@@ -37,17 +37,17 @@ resource server 'Microsoft.Sql/servers@2024-05-01-preview' = {
   }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-05-01' existing = if (virtualNetworkRule != null) {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2025-05-01' existing = if (virtualNetworkRule != null) {
   name: virtualNetworkRule.?virtualNetwork.?name!
   scope: resourceGroup(virtualNetworkRule.?virtualNetwork.?subscriptionId ?? subscription().subscriptionId, virtualNetworkRule.?virtualNetwork.?resourceGroupName!)
 }
 
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' existing = if (virtualNetworkRule != null) {
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2025-05-01' existing = if (virtualNetworkRule != null) {
   name: virtualNetworkRule.?virtualNetwork.?subnetName!
   parent: virtualNetwork
 }
 
-resource virtualNetworkRules 'Microsoft.Sql/servers/virtualNetworkRules@2024-05-01-preview' = if (virtualNetworkRule != null) {
+resource virtualNetworkRules 'Microsoft.Sql/servers/virtualNetworkRules@2024-11-01-preview' = if (virtualNetworkRule != null) {
   name: virtualNetworkRule.?name!
   parent: server
   properties: {

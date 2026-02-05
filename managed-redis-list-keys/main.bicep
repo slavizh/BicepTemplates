@@ -1,11 +1,11 @@
 @description('The name of the Managed Redis cache.')
 param redisName string
 
-resource redis 'Microsoft.Cache/redisEnterprise@2025-05-01-preview' existing = {
+resource redis 'Microsoft.Cache/redisEnterprise@2025-08-01-preview' existing = {
   name: redisName
 }
 
-resource redisDatabase 'Microsoft.Cache/redisEnterprise/databases@2025-05-01-preview' = {
+resource redisDatabase 'Microsoft.Cache/redisEnterprise/databases@2025-08-01-preview' = {
   name: 'default'
   parent: redis
 }

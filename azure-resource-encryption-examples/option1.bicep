@@ -18,12 +18,12 @@ param keyVaultKeyName string = ''
 param keyVaultKeyVersion string = ''
 
 
-resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-07-31-preview' existing = {
+resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview' existing = {
   name: userAssignedIdentityName
   scope: resourceGroup(userAssignedIdentitySubscriptionId, userAssignedIdentityResourceGroup)
 }
 
-resource sqlServer 'Microsoft.Sql/servers@2024-05-01-preview' = {
+resource sqlServer 'Microsoft.Sql/servers@2024-11-01-preview' = {
   name: sqlServerName
   location: resourceGroup().location
   identity: {

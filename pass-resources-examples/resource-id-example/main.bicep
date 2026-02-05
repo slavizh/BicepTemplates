@@ -13,7 +13,7 @@ param ignoreMissingVnetServiceEndpoint bool = false
 @description('The resource ID of the virtual network subnet to be added for the virtual network rule. Requires to configure virtualNetworkRuleName as well.')
 param virtualNetworkSubnetId string = ''
 
-resource server 'Microsoft.Sql/servers@2024-05-01-preview' = {
+resource server 'Microsoft.Sql/servers@2024-11-01-preview' = {
   name: sqlServerName
   location: resourceGroup().location
   properties: {
@@ -24,17 +24,17 @@ resource server 'Microsoft.Sql/servers@2024-05-01-preview' = {
   }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-05-01' existing = if (!empty(virtualNetworkSubnetId)) {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2025-05-01' existing = if (!empty(virtualNetworkSubnetId)) {
   name: split(virtualNetworkSubnetId, '/')[8]
   scope: resourceGroup(split(virtualNetworkSubnetId, '/')[2], split(virtualNetworkSubnetId, '/')[4])
 }
 
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' existing = if (!empty(virtualNetworkSubnetId)) {
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2025-05-01' existing = if (!empty(virtualNetworkSubnetId)) {
   name:  split(virtualNetworkSubnetId, '/')[10]
   parent: virtualNetwork
 }
 
-resource virtualNetworkRules 'Microsoft.Sql/servers/virtualNetworkRules@2024-05-01-preview' = if (!empty(virtualNetworkSubnetId) && !empty(virtualNetworkRuleName)) {
+resource virtualNetworkRules 'Microsoft.Sql/servers/virtualNetworkRules@2024-11-01-preview' = if (!empty(virtualNetworkSubnetId) && !empty(virtualNetworkRuleName)) {
   name: virtualNetworkRuleName
   parent: server
   properties: {

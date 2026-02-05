@@ -21,27 +21,27 @@ param keyVaultKeyName string = ''
 @description('The version of the key in the key vault. Default: latest version available at deployment time.')
 param keyVaultKeyVersion string = ''
 
-resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-07-31-preview' existing = {
+resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview' existing = {
   name: userAssignedIdentityName
   scope: resourceGroup(userAssignedIdentitySubscriptionId, userAssignedIdentityResourceGroup)
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2024-04-01-preview' existing = if(!empty(keyVaultKeyName) && !empty(keyVaultName) && !empty(keyVaultResourceGroup)) {
+resource keyVault 'Microsoft.KeyVault/vaults@2024-12-01-preview' existing = if(!empty(keyVaultKeyName) && !empty(keyVaultName) && !empty(keyVaultResourceGroup)) {
   name: keyVaultName
   scope: resourceGroup(keyVaultSubscriptionId, keyVaultResourceGroup)
 }
 
-resource keyVaultKey 'Microsoft.KeyVault/vaults/keys@2024-04-01-preview' existing = if(!empty(keyVaultKeyName) && !empty(keyVaultName) && !empty(keyVaultResourceGroup)) {
+resource keyVaultKey 'Microsoft.KeyVault/vaults/keys@2025-05-01' existing = if(!empty(keyVaultKeyName) && !empty(keyVaultName) && !empty(keyVaultResourceGroup)) {
   name: keyVaultKeyName
   parent: keyVault
 }
 
-resource keyVaultKeyVersionRes 'Microsoft.KeyVault/vaults/keys/versions@2024-04-01-preview' existing = if(!empty(keyVaultKeyVersion)) {
+resource keyVaultKeyVersionRes 'Microsoft.KeyVault/vaults/keys/versions@2025-05-01' existing = if(!empty(keyVaultKeyVersion)) {
   name: keyVaultKeyVersion
   parent: keyVaultKey
 }
 
-resource sqlServer 'Microsoft.Sql/servers@2024-05-01-preview' = {
+resource sqlServer 'Microsoft.Sql/servers@2024-11-01-preview' = {
   name: sqlServerName
   location: resourceGroup().location
   identity: {
@@ -62,8 +62,8 @@ resource sqlServer 'Microsoft.Sql/servers@2024-05-01-preview' = {
     primaryUserAssignedIdentityId: userAssignedIdentity.id
     keyId: !empty(keyVaultName)
       ? !empty(keyVaultKeyVersion)
-        ? keyVaultKeyVersionRes.properties.keyUriWithVersion
-        : keyVaultKey.properties.keyUriWithVersion
+        ? keyVaultKeyVersionRes!.properties.keyUriWithVersion
+        : keyVaultKey!.properties.keyUriWithVersion
       : null
   }
 }

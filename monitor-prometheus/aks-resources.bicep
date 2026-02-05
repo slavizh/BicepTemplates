@@ -2,11 +2,11 @@ param aksResourceId string
 param dataCollectionRuleId string
 param aksLocation string
 
-resource aksCluster 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' existing = {
+resource aksCluster 'Microsoft.ContainerService/managedClusters@2025-10-02-preview' existing = {
   name: split(aksResourceId, '/')[8]
 }
 
-resource dataCollectionRuleAssociation 'Microsoft.Insights/dataCollectionRuleAssociations@2021-09-01-preview' = {
+resource dataCollectionRuleAssociation 'Microsoft.Insights/dataCollectionRuleAssociations@2024-03-11' = {
   name: '${split(dataCollectionRuleId, '/')[8]}-${split(aksResourceId, '/')[8]}'
   scope: aksCluster
   properties: {
@@ -15,7 +15,7 @@ resource dataCollectionRuleAssociation 'Microsoft.Insights/dataCollectionRuleAss
   }
 }
 
-resource aksClusterUpdate 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
+resource aksClusterUpdate 'Microsoft.ContainerService/managedClusters@2025-10-02-preview' = {
   name: split(aksResourceId, '/')[8]
   location: aksLocation
   identity: {type: 'SystemAssigned'}

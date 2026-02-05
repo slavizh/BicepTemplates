@@ -7,7 +7,7 @@ param resourceGroupName string
 @description('The name of the Log Analytics workspace.')
 param logAnalyticsWorkspaceName string
 
-resource logAnalyticsWorkspaceResource 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
+resource logAnalyticsWorkspaceResource 'Microsoft.OperationalInsights/workspaces@2025-07-01' existing = {
   name: logAnalyticsWorkspaceName
   scope: resourceGroup(subscriptionId, resourceGroupName)
 }

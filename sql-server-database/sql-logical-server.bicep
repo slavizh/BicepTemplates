@@ -7,7 +7,7 @@ resource primaryUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIden
   scope: resourceGroup(sqlLogicalServer.primaryUserAssignedIdentity.?subscriptionId ?? subscription().subscriptionId, sqlLogicalServer.primaryUserAssignedIdentity.resourceGroupName)
 }
 
-resource sqlLogicalServerRes 'Microsoft.Sql/servers@2024-05-01-preview' = {
+resource sqlLogicalServerRes 'Microsoft.Sql/servers@2024-11-01-preview' = {
   name: sqlLogicalServer.name
   location: resourceGroup().location
   tags: sqlLogicalServer.?tags ?? {}
@@ -56,7 +56,7 @@ resource sqlLogicalServerRes 'Microsoft.Sql/servers@2024-05-01-preview' = {
   }
 }
 
-resource entraAuthentication 'Microsoft.Sql/servers/administrators@2024-05-01-preview' = if (sqlLogicalServer.authentication.type =~ 'EntraOnly' || sqlLogicalServer.authentication.type =~ 'EntraAndSQL') {
+resource entraAuthentication 'Microsoft.Sql/servers/administrators@2024-11-01-preview' = if (sqlLogicalServer.authentication.type =~ 'EntraOnly' || sqlLogicalServer.authentication.type =~ 'EntraAndSQL') {
   name: 'ActiveDirectory'
   parent: sqlLogicalServerRes
   properties: {
@@ -67,7 +67,7 @@ resource entraAuthentication 'Microsoft.Sql/servers/administrators@2024-05-01-pr
   }
 }
 
-resource connectionPolicy 'Microsoft.Sql/servers/connectionPolicies@2024-05-01-preview' = {
+resource connectionPolicy 'Microsoft.Sql/servers/connectionPolicies@2024-11-01-preview' = {
   name: 'default'
   parent: sqlLogicalServerRes
   dependsOn: [
@@ -84,17 +84,17 @@ var defaultSqlLogicalServerArrays = {
 }
 
 // Diagnostic settings for SQL logical server are assigned at master database resource which is created by default
-resource masterDatabase 'Microsoft.Sql/servers/databases@2024-05-01-preview' existing = {
+resource masterDatabase 'Microsoft.Sql/servers/databases@2024-11-01-preview' existing = {
   name: 'master'
   parent: sqlLogicalServerRes
 }
 
-resource logAnalyticsWorkspaces 'Microsoft.OperationalInsights/workspaces@2025-02-01' existing = [for (diagnosticSetting, i) in union(defaultSqlLogicalServerArrays, sqlLogicalServer).diagnosticSettings: if (diagnosticSetting.destinationType == 'LogAnalytics') {
+resource logAnalyticsWorkspaces 'Microsoft.OperationalInsights/workspaces@2025-07-01' existing = [for (diagnosticSetting, i) in union(defaultSqlLogicalServerArrays, sqlLogicalServer).diagnosticSettings: if (diagnosticSetting.destinationType == 'LogAnalytics') {
   name: diagnosticSetting.logAnalytics.name
   scope: resourceGroup(diagnosticSetting.logAnalytics.?subscriptionId ?? subscription().subscriptionId, diagnosticSetting.logAnalytics.resourceGroupName)
 }]
 
-resource storageAccounts 'Microsoft.Storage/storageAccounts@2024-01-01' existing = [for (diagnosticSetting, i) in union(defaultSqlLogicalServerArrays, sqlLogicalServer).diagnosticSettings: if (diagnosticSetting.destinationType == 'StorageAccount') {
+resource storageAccounts 'Microsoft.Storage/storageAccounts@2025-06-01' existing = [for (diagnosticSetting, i) in union(defaultSqlLogicalServerArrays, sqlLogicalServer).diagnosticSettings: if (diagnosticSetting.destinationType == 'StorageAccount') {
   name: diagnosticSetting.storageAccount.name
   scope: resourceGroup(diagnosticSetting.storageAccount.?subscriptionId ?? subscription().subscriptionId, diagnosticSetting.storageAccount.resourceGroupName)
 }]

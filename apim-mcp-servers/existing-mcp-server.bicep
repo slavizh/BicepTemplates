@@ -8,11 +8,11 @@ param backend types.backend
 @description('The MCP server configuration.')
 param mcpServer types.mcpServer
 
-resource apiManagementService 'Microsoft.ApiManagement/service@2024-06-01-preview' existing = {
+resource apiManagementService 'Microsoft.ApiManagement/service@2025-03-01-preview' existing = {
   name: apiManagementServiceName
 }
 
-resource mcpBackend 'Microsoft.ApiManagement/service/backends@2024-06-01-preview' = {
+resource mcpBackend 'Microsoft.ApiManagement/service/backends@2025-03-01-preview' = {
   name: backend.name
   parent: apiManagementService
   properties: {
@@ -31,7 +31,7 @@ resource mcpBackend 'Microsoft.ApiManagement/service/backends@2024-06-01-preview
   }
 }
 
-resource mcp 'Microsoft.ApiManagement/service/apis@2024-06-01-preview' = {
+resource mcp 'Microsoft.ApiManagement/service/apis@2025-03-01-preview' = {
   name: mcpServer.name
   parent: apiManagementService
   properties: {
@@ -74,7 +74,7 @@ resource mcp 'Microsoft.ApiManagement/service/apis@2024-06-01-preview' = {
   }
 }
 
-resource mcpPolicy 'Microsoft.ApiManagement/service/apis/policies@2024-06-01-preview' = if (contains(mcpServer, 'policy')) {
+resource mcpPolicy 'Microsoft.ApiManagement/service/apis/policies@2025-03-01-preview' = if (contains(mcpServer, 'policy')) {
   name: 'policy'
   parent: mcp
   properties: {

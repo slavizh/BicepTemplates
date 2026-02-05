@@ -2,11 +2,11 @@ param database object
 @secure()
 param sqlLogicalServerName string
 
-resource sqlLogicalServer 'Microsoft.Sql/servers@2024-05-01-preview' existing = {
+resource sqlLogicalServer 'Microsoft.Sql/servers@2024-11-01-preview' existing = {
   name: sqlLogicalServerName
 }
 
-resource sqlDatabase 'Microsoft.Sql/servers/databases@2024-05-01-preview' = {
+resource sqlDatabase 'Microsoft.Sql/servers/databases@2024-11-01-preview' = {
   name: database.name
   parent: sqlLogicalServer
   location: resourceGroup().location
@@ -47,7 +47,7 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2024-05-01-preview' = {
   }
 }
 
-resource transparentDataEncryption 'Microsoft.Sql/servers/databases/transparentDataEncryption@2024-05-01-preview' = {
+resource transparentDataEncryption 'Microsoft.Sql/servers/databases/transparentDataEncryption@2024-11-01-preview' = {
   name: 'current'
   parent: sqlDatabase
   properties: {
@@ -55,7 +55,7 @@ resource transparentDataEncryption 'Microsoft.Sql/servers/databases/transparentD
   }
 }
 
-resource backupShortTermRetention 'Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies@2024-05-01-preview' = {
+resource backupShortTermRetention 'Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies@2024-11-01-preview' = {
   name: 'default'
   parent: sqlDatabase
   dependsOn: [
@@ -72,7 +72,7 @@ resource backupShortTermRetention 'Microsoft.Sql/servers/databases/backupShortTe
   }
 }
 
-resource backupLongTermRetention 'Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies@2024-05-01-preview' = if (contains(database, 'backup') ? contains(database.backup, 'longTerm') : false) {
+resource backupLongTermRetention 'Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies@2024-11-01-preview' = if (contains(database, 'backup') ? contains(database.backup, 'longTerm') : false) {
   name: 'default'
   parent: sqlDatabase
   dependsOn: [
@@ -92,12 +92,12 @@ var defaultDatabaseArrays = {
   dataCollectionRuleAssociations: []
 }
 
-resource logAnalyticsWorkspaces 'Microsoft.OperationalInsights/workspaces@2025-02-01' existing = [for (diagnosticSetting, i) in union(defaultDatabaseArrays, database).diagnosticSettings: if (diagnosticSetting.destinationType == 'LogAnalytics') {
+resource logAnalyticsWorkspaces 'Microsoft.OperationalInsights/workspaces@2025-07-01' existing = [for (diagnosticSetting, i) in union(defaultDatabaseArrays, database).diagnosticSettings: if (diagnosticSetting.destinationType == 'LogAnalytics') {
   name: diagnosticSetting.logAnalytics.name
   scope: resourceGroup(diagnosticSetting.logAnalytics.?subscriptionId ?? subscription().subscriptionId, diagnosticSetting.logAnalytics.resourceGroupName)
 }]
 
-resource storageAccounts 'Microsoft.Storage/storageAccounts@2024-01-01' existing = [for (diagnosticSetting, i) in union(defaultDatabaseArrays, database).diagnosticSettings: if (diagnosticSetting.destinationType == 'StorageAccount') {
+resource storageAccounts 'Microsoft.Storage/storageAccounts@2025-06-01' existing = [for (diagnosticSetting, i) in union(defaultDatabaseArrays, database).diagnosticSettings: if (diagnosticSetting.destinationType == 'StorageAccount') {
   name: diagnosticSetting.storageAccount.name
   scope: resourceGroup(diagnosticSetting.storageAccount.?subscriptionId ?? subscription().subscriptionId, diagnosticSetting.storageAccount.resourceGroupName)
 }]
@@ -124,12 +124,12 @@ resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
   }
 }]
 
-resource dataCollectionRules 'Microsoft.Insights/dataCollectionRules@2023-03-11' existing = [for dataCollectionRuleAssociation in union(defaultDatabaseArrays, database).dataCollectionRuleAssociations: {
+resource dataCollectionRules 'Microsoft.Insights/dataCollectionRules@2024-03-11' existing = [for dataCollectionRuleAssociation in union(defaultDatabaseArrays, database).dataCollectionRuleAssociations: {
   name: dataCollectionRuleAssociation.dataCollectionRule.name
   scope: resourceGroup(dataCollectionRuleAssociation.dataCollectionRule.?subscriptionId ?? subscription().subscriptionId, dataCollectionRuleAssociation.dataCollectionRule.resourceGroup)
 }]
 
-resource dataCollectionRuleAssociations 'Microsoft.Insights/dataCollectionRuleAssociations@2023-03-11' = [for (dataCollectionRuleAssociation, i) in union(defaultDatabaseArrays, database).dataCollectionRuleAssociations: {
+resource dataCollectionRuleAssociations 'Microsoft.Insights/dataCollectionRuleAssociations@2024-03-11' = [for (dataCollectionRuleAssociation, i) in union(defaultDatabaseArrays, database).dataCollectionRuleAssociations: {
   name: dataCollectionRuleAssociation.name
   scope: sqlDatabase
   properties: {

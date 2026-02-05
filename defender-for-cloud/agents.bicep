@@ -10,14 +10,14 @@ param logAnalyticsRegion string
 ])
 param vulnerabilityAssessmentProviderType string = 'mdeTvm'
 
-resource cspmPlan 'Microsoft.Security/pricings@2022-03-01' = {
+resource cspmPlan 'Microsoft.Security/pricings@2024-01-01' = {
   name: 'CloudPosture'
   properties: {
     pricingTier: 'Standard'
   }
 }
 
-resource serversPlan 'Microsoft.Security/pricings@2022-03-01' = {
+resource serversPlan 'Microsoft.Security/pricings@2024-01-01' = {
   name: 'VirtualMachines'
   dependsOn: [
     cspmPlan
@@ -28,7 +28,7 @@ resource serversPlan 'Microsoft.Security/pricings@2022-03-01' = {
   }
 }
 
-resource containersPlan 'Microsoft.Security/pricings@2022-03-01' = {
+resource containersPlan 'Microsoft.Security/pricings@2024-01-01' = {
   name: 'Containers'
   dependsOn: [
     serversPlan
@@ -38,14 +38,13 @@ resource containersPlan 'Microsoft.Security/pricings@2022-03-01' = {
   }
 }
 
-resource containersAddonPolicyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' existing = {
+resource containersAddonPolicyDefinition 'Microsoft.Authorization/policyDefinitions@2025-03-01' existing = {
   name: 'a8eff44f-8c92-45c3-a3fb-9880802d67a7'
   scope: tenant()
 }
 
-resource containersAddonPolicy 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
+resource containersAddonPolicy 'Microsoft.Authorization/policyAssignments@2025-03-01' = {
   name: 'Defender for Containers provisioning Azure Policy Addon for Kub'
-  #disable-next-line no-loc-expr-outside-params
   location: deployment().location
   identity: {
     type: 'UserAssigned'
@@ -64,12 +63,12 @@ resource containersAddonPolicy 'Microsoft.Authorization/policyAssignments@2021-0
   }
 }
 
-resource containersArcExtensionPolicyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' existing = {
+resource containersArcExtensionPolicyDefinition 'Microsoft.Authorization/policyDefinitions@2025-03-01' existing = {
   name: '0adc5395-9169-4b9b-8687-af838d69410a'
   scope: tenant()
 }
 
-resource containersArcExtensionPolicy 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
+resource containersArcExtensionPolicy 'Microsoft.Authorization/policyAssignments@2025-03-01' = {
   name: 'Defender for Containers provisioning Policy extension for Arc-e'
   #disable-next-line no-loc-expr-outside-params
   location: deployment().location
@@ -90,14 +89,13 @@ resource containersArcExtensionPolicy 'Microsoft.Authorization/policyAssignments
   }
 }
 
-resource containersProvisioningArcPolicyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' existing = {
+resource containersProvisioningArcPolicyDefinition 'Microsoft.Authorization/policyDefinitions@2025-03-01' existing = {
   name: '708b60a6-d253-4fe0-9114-4be4c00f012c'
   scope: tenant()
 }
 
-resource containersProvisioningArcPolicy 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
+resource containersProvisioningArcPolicy 'Microsoft.Authorization/policyAssignments@2025-03-01' = {
   name: 'Defender for Containers provisioning ARC k8s Enabled'
-  #disable-next-line no-loc-expr-outside-params
   location: deployment().location
   identity: {
     type: 'UserAssigned'
@@ -116,14 +114,13 @@ resource containersProvisioningArcPolicy 'Microsoft.Authorization/policyAssignme
   }
 }
 
-resource containersSecurityProfilePolicyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' existing = {
+resource containersSecurityProfilePolicyDefinition 'Microsoft.Authorization/policyDefinitions@2025-03-01' existing = {
   name: '64def556-fbad-4622-930e-72d1d5589bf5'
   scope: tenant()
 }
 
-resource containersSecurityProfilePolicy 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
+resource containersSecurityProfilePolicy 'Microsoft.Authorization/policyAssignments@2025-03-01' = {
   name: 'Defender for Containers provisioning AKS Security Profile'
-  #disable-next-line no-loc-expr-outside-params
   location: deployment().location
   identity: {
     type: 'UserAssigned'
@@ -142,8 +139,7 @@ resource containersSecurityProfilePolicy 'Microsoft.Authorization/policyAssignme
   }
 }
 
-#disable-next-line BCP081
-resource defenderVulnerabilityManagement 'Microsoft.Security/serverVulnerabilityAssessmentsSettings@2022-01-01-preview' = if (vulnerabilityAssessmentProviderType =~ 'mdeTvm') {
+resource defenderVulnerabilityManagement 'Microsoft.Security/serverVulnerabilityAssessmentsSettings@2023-05-01' = if (vulnerabilityAssessmentProviderType =~ 'mdeTvm') {
   name: 'AzureServersSetting'
   kind: 'AzureServersSetting'
   dependsOn: [
@@ -155,15 +151,14 @@ resource defenderVulnerabilityManagement 'Microsoft.Security/serverVulnerability
   }
 }
 
-resource vulnerabilityAssessmentQualysPolicyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' existing = {
+resource vulnerabilityAssessmentQualysPolicyDefinition 'Microsoft.Authorization/policyDefinitions@2025-03-01' existing = {
   name: '13ce0167-8ca6-4048-8e6b-f996402e3c1b'
   scope: tenant()
 }
 
 // May be in the future Defender Vulnerability Management will also be configured via policy as the policy supports type
-resource vulnerabilityAssessmentQualysPolicy 'Microsoft.Authorization/policyAssignments@2021-06-01' =  if (vulnerabilityAssessmentProviderType =~ 'default') {
+resource vulnerabilityAssessmentQualysPolicy 'Microsoft.Authorization/policyAssignments@2025-03-01' = if (vulnerabilityAssessmentProviderType =~ 'default') {
   name: 'ASC auto provisioning of vulnerability assessment agent for mac'
-  #disable-next-line no-loc-expr-outside-params
   location: deployment().location
   identity: {
     type: 'UserAssigned'
@@ -198,14 +193,13 @@ resource autoProvisioning 'Microsoft.Security/autoProvisioningSettings@2017-08-0
   }
 }
 
-resource serversMonitorAgentPolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2021-06-01' existing = {
+resource serversMonitorAgentPolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2025-03-01' existing = {
   name: '500ab3a2-f1bd-4a5a-8e47-3e09d9a294c3'
   scope: tenant()
 }
 
-resource serversMonitorAgentPolicy 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
+resource serversMonitorAgentPolicy 'Microsoft.Authorization/policyAssignments@2025-03-01' = {
   name: 'Custom Defender for Cloud provisioning Azure Monitor agent'
-  #disable-next-line no-loc-expr-outside-params
   location: deployment().location
   identity: {
     type: 'UserAssigned'

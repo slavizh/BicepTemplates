@@ -36,12 +36,12 @@ param managedIdentity identityType
 @description('The action group for the alert.')
 param actionGroup actionGroupType
 
-resource logAnalyticsWorkspaceResource 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
+resource logAnalyticsWorkspaceResource 'Microsoft.OperationalInsights/workspaces@2025-07-01' existing = {
   name: logAnalyticsWorkspace.name
   scope: resourceGroup(logAnalyticsWorkspace.?subscriptionId ?? subscription().subscriptionId, logAnalyticsWorkspace.?resourceGroupName!)
 }
 
-resource managedIdentityResource 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-07-31-preview' existing = {
+resource managedIdentityResource 'Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview' existing = {
   name: managedIdentity.name
   scope: resourceGroup(managedIdentity.?subscriptionId ?? subscription().subscriptionId, managedIdentity.resourceGroupName)
 }
@@ -51,7 +51,7 @@ resource actionGroupResource 'Microsoft.Insights/actionGroups@2024-10-01-preview
   scope: resourceGroup(actionGroup.?subscriptionId ?? subscription().subscriptionId, actionGroup.resourceGroupName)
 }
 
-resource logAlert 'Microsoft.Insights/scheduledQueryRules@2023-03-15-preview' = {
+resource logAlert 'Microsoft.Insights/scheduledQueryRules@2025-01-01-preview' = {
   name: 'Azure Subscription was cancelled'
   location: resourceGroup().location
   identity: {

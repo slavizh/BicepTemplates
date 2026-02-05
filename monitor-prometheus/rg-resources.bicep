@@ -13,7 +13,7 @@ resource monitorWorkspace 'Microsoft.Monitor/accounts@2021-06-03-preview' = {
   properties: {}
 }
 
-resource grafana 'Microsoft.Dashboard/grafana@2022-08-01' = {
+resource grafana 'Microsoft.Dashboard/grafana@2025-09-01-preview' = {
   name: grafanaName
   location: location
   tags: {}

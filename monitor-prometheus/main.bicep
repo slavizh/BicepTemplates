@@ -17,7 +17,7 @@ param aksLocation string
 @description('Resource ID of the action group that will be attached to Prometheus alerts')
 param actionGroupResourceId string
 
-resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource rg 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: resourceGroupName
   location: location
   tags: {}
