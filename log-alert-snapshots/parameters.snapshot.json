@@ -1,0 +1,169 @@
+{
+  "predictedResources": [
+    {
+      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/alerts/providers/Microsoft.Insights/scheduledQueryRules/logAlert001",
+      "type": "Microsoft.Insights/scheduledQueryRules",
+      "name": "logAlert001",
+      "apiVersion": "2025-01-01-preview",
+      "location": "westeurope",
+      "kind": "LogAlert",
+      "identity": {
+        "type": "None",
+        "userAssignedIdentities": null
+      },
+      "tags": {},
+      "properties": {
+        "displayName": "Log Alert 001",
+        "description": null,
+        "enabled": true,
+        "autoMitigate": false,
+        "severity": 3,
+        "evaluationFrequency": "PT15M",
+        "windowSize": "PT15M",
+        "overrideQueryTimeRange": null,
+        "muteActionsDuration": null,
+        "scopes": [
+          "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/kusto/providers/Microsoft.OperationalInsights/workspaces/workspace001"
+        ],
+        "criteria": {
+          "allOf": [
+            {
+              "criterionType": "StaticThresholdCriterion",
+              "query": "Perf",
+              "timeAggregation": "Average",
+              "metricMeasureColumn": "CounterValue",
+              "operator": "GreaterThan",
+              "threshold": "0.5",
+              "alertSensitivity": null,
+              "minRecurrenceCount": null,
+              "ignoreDataBefore": null,
+              "resourceIdColumn": null,
+              "failingPeriods": {
+                "minFailingPeriodsToAlert": 1,
+                "numberOfEvaluationPeriods": 1
+              },
+              "dimensions": []
+            }
+          ]
+        },
+        "checkWorkspaceAlertsStorageConfigured": false,
+        "skipQueryValidation": false,
+        "actions": {
+          "actionGroups": [],
+          "actionProperties": {},
+          "customProperties": {}
+        }
+      }
+    },
+    {
+      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/alerts/providers/Microsoft.Insights/scheduledQueryRules/logAlert002",
+      "type": "Microsoft.Insights/scheduledQueryRules",
+      "name": "logAlert002",
+      "apiVersion": "2025-01-01-preview",
+      "location": "westeurope",
+      "kind": "LogAlert",
+      "identity": {
+        "type": "None",
+        "userAssignedIdentities": null
+      },
+      "tags": {},
+      "properties": {
+        "displayName": "Log Alert 002",
+        "description": null,
+        "enabled": true,
+        "autoMitigate": false,
+        "severity": 2,
+        "evaluationFrequency": "PT15M",
+        "windowSize": "PT15M",
+        "overrideQueryTimeRange": null,
+        "muteActionsDuration": null,
+        "scopes": [
+          "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/identities"
+        ],
+        "criteria": {
+          "allOf": [
+            {
+              "criterionType": "DynamicThresholdCriterion",
+              "query": "AzureActivity",
+              "timeAggregation": "Count",
+              "metricMeasureColumn": null,
+              "operator": "GreaterThan",
+              "threshold": null,
+              "alertSensitivity": "Low",
+              "minRecurrenceCount": null,
+              "ignoreDataBefore": null,
+              "resourceIdColumn": "_ResourceId",
+              "failingPeriods": {
+                "minFailingPeriodsToAlert": 1,
+                "numberOfEvaluationPeriods": 1
+              },
+              "dimensions": []
+            }
+          ]
+        },
+        "checkWorkspaceAlertsStorageConfigured": false,
+        "skipQueryValidation": false,
+        "actions": {
+          "actionGroups": [],
+          "actionProperties": {},
+          "customProperties": {}
+        }
+      }
+    },
+    {
+      "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/alerts/providers/Microsoft.Insights/scheduledQueryRules/logAlert003",
+      "type": "Microsoft.Insights/scheduledQueryRules",
+      "name": "logAlert003",
+      "apiVersion": "2025-01-01-preview",
+      "location": "westeurope",
+      "kind": "SimpleLogAlert",
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/identities/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": {}
+        }
+      },
+      "tags": {},
+      "properties": {
+        "displayName": "Log Alert 003",
+        "description": null,
+        "enabled": true,
+        "autoMitigate": false,
+        "severity": 4,
+        "evaluationFrequency": null,
+        "windowSize": null,
+        "overrideQueryTimeRange": null,
+        "muteActionsDuration": null,
+        "scopes": [
+          "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/kusto/providers/Microsoft.OperationalInsights/workspaces/workspace001"
+        ],
+        "criteria": {
+          "allOf": [
+            {
+              "criterionType": null,
+              "query": "AzureActivity",
+              "timeAggregation": null,
+              "metricMeasureColumn": null,
+              "operator": null,
+              "threshold": null,
+              "alertSensitivity": null,
+              "minRecurrenceCount": 5,
+              "ignoreDataBefore": null,
+              "resourceIdColumn": null,
+              "failingPeriods": null,
+              "dimensions": null
+            }
+          ]
+        },
+        "checkWorkspaceAlertsStorageConfigured": false,
+        "skipQueryValidation": false,
+        "actions": {
+          "actionGroups": [],
+          "actionProperties": {},
+          "customProperties": {}
+        }
+      }
+    }
+  ],
+  "diagnostics": []
+}
